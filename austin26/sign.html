@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Austin's Card ✍️</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #00d4a8;
+      --blue:  #0099ff;
+      --bg:    #050810;
+      --muted: #6666aa;
+    }
+
+    body {
+      background: var(--bg);
+      color: #e4e4f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .back:hover { color: var(--green); }
+
+    .card {
+      background: #0d1120;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 40px 32px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    /* ── SIGNATURE PAD (placeholder — full implementation coming) ── */
+    .sig-section {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .pad-placeholder {
+      width: 100%;
+      height: 140px;
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(0,212,168,0.4);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .pad-placeholder .icon { font-size: 2rem; }
+    .pad-note { font-size: 0.75rem; color: #333366; margin-top: 6px; }
+
+    /* ── INPUTS ── */
+    input[type="text"], textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: #e4e4f0;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      border-color: rgba(0,212,168,0.5);
+    }
+
+    textarea { min-height: 90px; }
+
+    .field { margin-bottom: 18px; }
+
+    .char-count {
+      text-align: right;
+      font-size: 0.75rem;
+      color: #333366;
+      margin-top: 4px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      color: #000;
+      font-weight: 800;
+      font-size: 1rem;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      box-shadow: 0 4px 24px rgba(0,212,168,0.3);
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      letter-spacing: -0.01em;
+    }
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,212,168,0.4); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── SUCCESS STATE ── */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+    .success .emoji { font-size: 3.5rem; margin-bottom: 16px; }
+    .success h2 { font-size: 1.5rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
+    .success p  { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+    .success .view-link {
+      display: inline-block;
+      margin-top: 24px;
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .error-msg {
+      color: #ff6b6b;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<a class="back" href="index.html">← Back to card</a>
+
+<div class="card">
+  <!-- FORM -->
+  <div id="form-view">
+    <h1>Sign Austin's Card</h1>
+    <p class="sub">Leave a message and your John Hancock for the birthday boy 🎉<br>
+      <em style="font-size:0.8em;color:#444466">Hand-drawn signatures coming soon — type your name for now!</em>
+    </p>
+
+    <!-- Signature pad placeholder -->
+    <div class="sig-section">
+      <label>Your Signature</label>
+      <div class="pad-placeholder">
+        <span class="icon">✍️</span>
+        <span>Signature pad coming soon</span>
+      </div>
+      <div class="pad-note">Full hand-drawn signature support launching shortly</div>
+    </div>
+
+    <div class="field">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" placeholder="e.g. Sarah" maxlength="60" autocomplete="name">
+    </div>
+
+    <div class="field">
+      <label for="message">Your Message</label>
+      <textarea id="message" placeholder="Write something nice, funny, or both..." maxlength="300"></textarea>
+      <div class="char-count"><span id="char-count">0</span>/300</div>
+    </div>
+
+    <button class="btn" id="submit-btn" onclick="submitSignature()">Send It 🎉</button>
+    <div class="error-msg" id="error-msg">Something went wrong — try again!</div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success" id="success-view">
+    <div class="emoji">🎉</div>
+    <h2>Signed!</h2>
+    <p>Austin will love seeing your message.<br>Thanks for making his birthday special!</p>
+    <a class="view-link" href="index.html">← See the full card</a>
+  </div>
+</div>
+
+<script>
+  // ── CONFIG: replace with your real Supabase values ──
+  const SUPABASE_URL      = 'YOUR_SUPABASE_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+  const msgEl   = document.getElementById('message');
+  const countEl = document.getElementById('char-count');
+  msgEl.addEventListener('input', () => { countEl.textContent = msgEl.value.length; });
+
+  async function submitSignature() {
+    const name    = document.getElementById('name').value.trim();
+    const message = msgEl.value.trim();
+    const btn     = document.getElementById('submit-btn');
+    const errEl   = document.getElementById('error-msg');
+
+    errEl.style.display = 'none';
+
+    if (!name)    { alert('Please enter your name!');    return; }
+    if (!message) { alert('Please write a message!');    return; }
+
+    btn.disabled    = true;
+    btn.textContent = 'Sending…';
+
+    if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+      // Dev mode preview
+      setTimeout(showSuccess, 800);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/signatures`, {
+        method: 'POST',
+        headers: {
+          apikey:         SUPABASE_ANON_KEY,
+          Authorization:  `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer:         'return=minimal'
+        },
+        body: JSON.stringify({ name, message })
+      });
+
+      if (!res.ok) throw new Error('Bad response');
+      showSuccess();
+    } catch {
+      btn.disabled    = false;
+      btn.textContent = 'Send It 🎉';
+      errEl.style.display = 'block';
+    }
+  }
+
+  function showSuccess() {
+    document.getElementById('form-view').style.display    = 'none';
+    document.getElementById('success-view').style.display = 'block';
+  }
+</script>
+</body>
+</html>

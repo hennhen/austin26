@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Happy Birthday Austin! 🎉">
+  <title>Happy Birthday, Austin!</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #00d4a8;
+      --blue: #0099ff;
+      --bg: #050810;
+      --surface: #0d1120;
+      --border: rgba(255,255,255,0.08);
+      --text: #e4e4f0;
+      --muted: #6666aa;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── STARS ── */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 8%,  rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.12) 0%, transparent 100%),
+        radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5%  90%, rgba(255,255,255,0.08) 0%, transparent 100%);
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 64px 24px 32px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 10vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, var(--green) 0%, var(--blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 14px;
+    }
+
+    .hero .tagline {
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      color: var(--muted);
+      max-width: 400px;
+      margin: 0 auto 40px;
+      line-height: 1.5;
+    }
+
+    /* ── GARMIN WATCH ── */
+    .watch-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 0 0 48px;
+    }
+
+    .watch {
+      position: relative;
+      width: 160px;
+    }
+
+    .band {
+      width: 56px;
+      height: 28px;
+      background: #111827;
+      border: 2px solid #1f2d3d;
+      margin: 0 auto;
+    }
+
+    .band-top { border-radius: 6px 6px 0 0; border-bottom: none; }
+    .band-bot  { border-radius: 0 0 6px 6px; border-top: none;   }
+
+    .face {
+      width: 120px;
+      height: 130px;
+      background: #070e1a;
+      border: 3px solid var(--green);
+      border-radius: 32px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      box-shadow:
+        0 0 24px rgba(0,212,168,0.35),
+        0 0 80px rgba(0,212,168,0.12),
+        inset 0 0 40px rgba(0,0,0,0.6);
+      animation: glow 2.5s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%,100% { box-shadow: 0 0 24px rgba(0,212,168,0.35), 0 0 80px rgba(0,212,168,0.12); }
+      50%      { box-shadow: 0 0 36px rgba(0,212,168,0.55), 0 0 110px rgba(0,212,168,0.2); }
+    }
+
+    .face-brand  { font-size: 9px;  letter-spacing: 3px; color: var(--green); font-weight: 700; }
+    .face-steps  { font-size: 30px; font-weight: 900;  color: var(--green); line-height: 1; }
+    .face-unit   { font-size: 8px;  letter-spacing: 1px; color: #3a4a5a; text-transform: uppercase; }
+    .face-hr     { font-size: 12px; color: #ff6b6b; font-weight: 600; margin-top: 4px; }
+
+    .side-btn {
+      position: absolute;
+      right: -6px;
+      width: 5px;
+      height: 22px;
+      background: #1f2d3d;
+      border-radius: 3px;
+    }
+    .side-btn-top { top: 40px; }
+    .side-btn-bot { top: 68px; }
+
+    /* ── GIFT BANNER ── */
+    .gift {
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(135deg, rgba(0,212,168,0.09), rgba(0,153,255,0.09));
+      border: 1px solid rgba(0,212,168,0.25);
+      border-radius: 20px;
+      padding: 28px 28px;
+      max-width: 620px;
+      margin: 0 auto 56px;
+      width: calc(100% - 40px);
+      text-align: center;
+    }
+
+    .gift h2 { font-size: 1.4rem; color: var(--green); margin-bottom: 10px; }
+    .gift p  { color: #8888bb; font-size: 0.95rem; line-height: 1.65; }
+
+    /* ── SECTIONS ── */
+    .section {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(0,212,168,0.25);
+    }
+
+    /* ── FUNNY MESSAGES ── */
+    .msgs {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 520px) { .msgs { grid-template-columns: 1fr 1fr; } }
+
+    .msg-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .msg-card:hover { transform: translateY(-3px); border-color: rgba(0,212,168,0.3); }
+
+    .msg-text   { font-size: 0.95rem; line-height: 1.6; color: #ccccdd; margin-bottom: 14px; }
+    .msg-author { font-size: 0.8rem; color: var(--green); font-weight: 600; }
+
+    /* ── SIGNATURES WALL ── */
+    .sigs-wall {
+      position: relative;
+      min-height: 200px;
+    }
+
+    .sigs-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .sig-card {
+      background: rgba(0,212,168,0.04);
+      border: 1px solid rgba(0,212,168,0.18);
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+
+    .sig-name    { font-weight: 700; color: #fff; font-size: 0.95rem; margin-bottom: 6px; }
+    .sig-message { color: #7777aa; font-size: 0.88rem; line-height: 1.55; }
+
+    .sig-placeholder {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 20px;
+      font-size: 0.9rem;
+    }
+
+    /* ── SIGN CTA ── */
+    .sign-cta {
+      text-align: center;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      color: #000;
+      font-weight: 800;
+      font-size: 1rem;
+      border-radius: 100px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(0,212,168,0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      letter-spacing: -0.01em;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 36px rgba(0,212,168,0.45);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 32px 20px 48px;
+      color: #222244;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Happy Birthday,<br>Austin!</h1>
+  <p class="tagline">We all pitched in — and we have opinions about your fitness 😄</p>
+
+  <div class="watch-wrap">
+    <div class="watch">
+      <div class="band band-top"></div>
+      <div class="face">
+        <span class="face-brand">GARMIN</span>
+        <span class="face-steps">10,247</span>
+        <span class="face-unit">steps today</span>
+        <span class="face-hr">♥ 68 bpm</span>
+      </div>
+      <div class="band band-bot"></div>
+      <div class="side-btn side-btn-top"></div>
+      <div class="side-btn side-btn-bot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- GIFT BANNER -->
+<div class="gift">
+  <h2>🎁 We Got You Something</h2>
+  <p>
+    We all chipped in to get you a <strong style="color:var(--green)">Garmin Watch</strong> — because
+    nothing says "we care about you" like a device that will monitor your heart rate, judge your sleep,
+    track your stress, and remind you to move every hour. Happy birthday. You're welcome.
+  </p>
+</div>
+
+<!-- MESSAGES FROM THE CREW -->
+<div class="section">
+  <div class="section-title">Messages from the Crew</div>
+  <div class="msgs">
+    <div class="msg-card">
+      <p class="msg-text">"Congrats! You now own a device that costs more than your gym membership
+        and will be more consistent at tracking your progress than you will be."</p>
+      <div class="msg-author">— From the whole squad 😂</div>
+    </div>
+    <div class="msg-card">
+      <p class="msg-text">"May your heart rate always be in Zone 2 and your recovery score
+        never drop below 70. Happy birthday, king."</p>
+      <div class="msg-author">— People who also skip leg day</div>
+    </div>
+    <div class="msg-card">
+      <p class="msg-text">"You're officially the most-tracked person we know. There's
+        nowhere to hide now. Big Brother is on your wrist."</p>
+      <div class="msg-author">— Your biggest fans (and snitches)</div>
+    </div>
+    <div class="msg-card">
+      <p class="msg-text">"We hope the Garmin battery lasts longer than your motivation on
+        day 3 of a new training plan. (Spoiler: it will.)"</p>
+      <div class="msg-author">— Spoken from experience</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNATURES WALL -->
+<div class="section">
+  <div class="section-title">Signed With Love</div>
+  <div class="sigs-wall">
+    <div id="sigs-container">
+      <div class="sig-placeholder">Loading signatures... 💌</div>
+    </div>
+  </div>
+  <div class="sign-cta">
+    <a href="sign.html" class="btn">✍️ Add Your Signature</a>
+  </div>
+</div>
+
+<footer>Made with ❤️ by your friends &nbsp;·&nbsp; Happy Birthday Austin 🎂</footer>
+
+<!-- Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+<script>
+  // ── CONFIG: replace with your real Supabase values ──
+  const SUPABASE_URL      = 'YOUR_SUPABASE_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+  // Launch confetti on load
+  window.addEventListener('load', () => {
+    const burst = (x, y, count) => confetti({
+      particleCount: count,
+      spread: 90,
+      origin: { x, y },
+      colors: ['#00d4a8', '#0099ff', '#ff6b6b', '#ffd700', '#ff69b4', '#fff']
+    });
+    burst(0.5, 0.25, 140);
+    setTimeout(() => burst(0.15, 0.45, 60), 500);
+    setTimeout(() => burst(0.85, 0.45, 60), 700);
+  });
+
+  // Load signatures from Supabase
+  async function loadSignatures() {
+    const container = document.getElementById('sigs-container');
+
+    if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+      container.innerHTML = '<div class="sig-placeholder">Signatures coming soon — be the first to sign! 👇</div>';
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/signatures?order=created_at.desc&select=name,message`,
+        { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
+      );
+      const rows = await res.json();
+
+      if (!Array.isArray(rows) || rows.length === 0) {
+        container.innerHTML = '<div class="sig-placeholder">No signatures yet — be the first! 👇</div>';
+        return;
+      }
+
+      const grid = document.createElement('div');
+      grid.className = 'sigs-grid';
+      rows.forEach(({ name, message }) => {
+        const card = document.createElement('div');
+        card.className = 'sig-card';
+        card.innerHTML = `
+          <div class="sig-name">${esc(name)}</div>
+          <div class="sig-message">${esc(message)}</div>
+        `;
+        grid.appendChild(card);
+      });
+      container.replaceWith(grid);
+    } catch {
+      container.innerHTML = '<div class="sig-placeholder">Signatures coming soon! 💌</div>';
+    }
+  }
+
+  const esc = s => String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  loadSignatures();
+</script>
+</body>
+</html>
