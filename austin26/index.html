@@ -2,407 +2,534 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Happy Birthday Austin! 🎉">
-  <title>Happy Birthday, Austin!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="description" content="Happy 26th, Austin.">
+  <title>A Gift For Austin 🎁</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Gloria+Hallelujah&family=Kalam:wght@400;700&family=Patrick+Hand&family=Permanent+Marker&family=Satisfy&family=Shadows+Into+Light&family=Space+Mono&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --green: #00d4a8;
-      --blue: #0099ff;
-      --bg: #050810;
-      --surface: #0d1120;
-      --border: rgba(255,255,255,0.08);
-      --text: #e4e4f0;
-      --muted: #6666aa;
+      --night: #14161C;
+      --paper: #F1EDE2;
+      --blaze: #FF4A14;
+      --muted: #6E7178;
+      --px: 0; --py: 0;
     }
 
-    html { scroll-behavior: smooth; }
-
+    html, body { height: 100%; overflow: hidden; background: #000; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: 'Archivo', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      color: var(--paper);
+      touch-action: manipulation;
     }
 
-    /* ── STARS ── */
-    .stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
+    .screen {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ════════════════════ STAGE 1 · FAKE TEMU REWARD FUNNEL ════════════════════ */
+    .gate {
+      z-index: 20; background: #0a0f0a; color: #fff;
+      transition: transform .5s cubic-bezier(.5,-0.4,.4,1.4), opacity .5s ease;
+    }
+    .gate.gone { transform: scale(1.6); opacity: 0; pointer-events: none; }
+
+    /* fake iOS status bar */
+    .statusbar {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 20px 0; pointer-events: none;
+      font-family: -apple-system, system-ui, sans-serif; font-size: .85rem; font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0,0,0,.35);
+    }
+    .statusbar .temu-pill {
+      background: #fff; color: #fb7701; font-weight: 800; font-style: italic;
+      padding: 2px 11px; border-radius: 100px; font-size: .82rem; letter-spacing: -.03em;
+    }
+    .statusbar .right { display: flex; align-items: center; gap: 6px; font-size: .74rem; }
+    .statusbar .batt { border: 1.4px solid #fff; border-radius: 3px; padding: 0 3px; }
+
+    /* panels */
+    .panel {
+      position: absolute; inset: 0; display: none;
+      flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 64px 22px 60px; overflow: hidden;
+    }
+    .panel.active { display: flex; animation: panelIn .45s ease both; }
+    @keyframes panelIn { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: scale(1); } }
+
+    .temu-h {
+      position: relative; z-index: 2; font-family: 'Anton', sans-serif; color: #ffd400;
+      -webkit-text-stroke: 1px rgba(0,0,0,.3);
+      text-shadow: 3px 3px 0 rgba(0,0,0,.35); transform: skewX(-7deg);
+      font-size: clamp(1.9rem, 8.5vw, 2.8rem); line-height: .95;
+    }
+
+    .disclaimer {
+      position: absolute; bottom: 8px; left: 0; right: 0; z-index: 6; padding: 0 20px;
+      font-family: -apple-system, system-ui, sans-serif;
+      font-size: .5rem; line-height: 1.35; color: rgba(255,255,255,.4); text-align: center;
+    }
+    .disclaimer u { text-decoration: underline; }
+
+    /* big CTA */
+    .cta {
+      position: relative; z-index: 3; display: inline-flex; align-items: center; gap: 9px;
+      font-family: 'Anton', sans-serif; font-size: 1.25rem; letter-spacing: .02em; text-transform: uppercase;
+      color: #fff; border: none; border-radius: 100px; padding: 16px 38px; cursor: pointer;
+      background: linear-gradient(180deg, #ff8a3d, #ff5a00);
+      box-shadow: 0 6px 0 #c43e00, 0 12px 20px rgba(0,0,0,.45);
+      animation: ctabounce 1s ease-in-out infinite;
+    }
+    .cta:active { transform: translateY(5px); box-shadow: 0 1px 0 #c43e00; }
+    @keyframes ctabounce { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .cta .finger { display: inline-block; animation: tapwiggle .8s ease-in-out infinite; }
+    @keyframes tapwiggle { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px) rotate(-8deg); } }
+
+    /* floating sparkles */
+    .spark { position: absolute; pointer-events: none; z-index: 1; opacity: 0;
+      animation: twinkle var(--t, 2.2s) ease-in-out var(--d, 0s) infinite; }
+    @keyframes twinkle {
+      0%,100% { opacity: 0; transform: translateY(0) scale(.5) rotate(0); }
+      50% { opacity: .9; transform: translateY(-10px) scale(1) rotate(30deg); }
+    }
+
+    /* ── PANEL 1 · PAYDAY ── */
+    .p1 { background: radial-gradient(120% 95% at 50% 28%, #2e6bff, #1340c0 55%, #0a2f6e); }
+    .cal-ghost { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .cal-ghost b { position: absolute; font-family: 'Anton', sans-serif; color: rgba(255,255,255,.12); line-height: .9; }
+    .paynote {
+      position: relative; z-index: 3; background: #ffe000; color: #111;
+      width: 232px; padding: 24px 20px 28px; border-radius: 5px;
+      transform: rotate(-7deg); box-shadow: 0 18px 44px rgba(0,0,0,.45); font-family: 'Anton', sans-serif;
+    }
+    .paynote .pin { position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      width: 24px; height: 24px; border-radius: 50%;
+      background: radial-gradient(circle at 34% 30%, #ff7b7b, #c0392b); box-shadow: 0 4px 7px rgba(0,0,0,.4); }
+    .paynote .l1 { font-size: 1.5rem; line-height: 1.08; }
+    .paynote .l2 { display: inline-block; position: relative; font-size: 2.4rem; margin-top: 6px; }
+    .paynote .l2::after { content: ''; position: absolute; inset: -8px -16px;
+      border: 4px solid #ff5a00; border-radius: 48% 52% 50% 50% / 62% 55% 45% 40%; transform: rotate(-5deg); }
+    .progress { position: relative; z-index: 3; width: 82%; max-width: 300px; margin-top: 52px; height: 9px;
+      background: rgba(255,255,255,.25); border-radius: 100px; }
+    .progress .fill { height: 100%; width: 6%; background: #ffd400; border-radius: 100px; transition: width 2.4s linear; }
+    .progress .ball { position: absolute; top: 50%; left: 6%; transform: translate(-50%,-50%); font-size: 1.5rem; transition: left 2.4s linear; }
+    .progress-label { position: relative; z-index: 3; margin-top: 14px; font-family: -apple-system, system-ui; font-weight: 700; }
+    .p1 .cta { margin-top: 30px; }
+
+    /* ── PANEL 2 · SPIN WHEEL ── */
+    .p2 { background: radial-gradient(120% 95% at 50% 18%, #0c5a2a, #073d1c 55%, #021f0e); }
+    .goal { position: relative; z-index: 3; display: inline-flex; align-items: center; gap: 7px;
+      background: linear-gradient(90deg, #1b47c4, #2e9bff); color: #fff; font-weight: 800; font-style: italic;
+      font-size: .88rem; padding: 6px 16px; border-radius: 100px; margin-bottom: 10px; }
+    .pills { position: relative; z-index: 3; display: flex; gap: 6px; margin: 10px 0 14px; }
+    .pill2 { font-size: .66rem; font-weight: 800; padding: 4px 11px; border-radius: 100px; }
+    .pill2.green { background: #2ecc71; color: #053a1b; }
+    .pill2.dark { background: #2a2a2a; color: #fb7701; }
+    .wheel-wrap { position: relative; z-index: 3; width: min(74vw, 282px); aspect-ratio: 1; }
+    .wheel-ptr { position: absolute; top: -3px; left: 50%; transform: translateX(-50%); z-index: 5;
+      width: 0; height: 0; border-left: 13px solid transparent; border-right: 13px solid transparent;
+      border-top: 22px solid #ffd400; filter: drop-shadow(0 2px 2px rgba(0,0,0,.4)); }
+    .wheel { width: 100%; height: 100%; border-radius: 50%; position: relative;
+      border: 7px solid #ffd400; box-shadow: 0 10px 30px rgba(0,0,0,.5);
+      background: conic-gradient(#1b47c4 0 90deg, #fff 90deg 180deg, #1b47c4 180deg 270deg, #fff 270deg 360deg); }
+    .wheel.spin { animation: idle 6s linear infinite; }
+    @keyframes idle { to { transform: rotate(360deg); } }
+    .seg { position: absolute; top: 50%; left: 50%; width: 112px; margin: -14px 0 0 -56px;
+      text-align: center; font-family: 'Anton', sans-serif; font-size: 1.05rem; }
+    .seg.blue { color: #fff; } .seg.white { color: #16213a; }
+    .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 4;
+      width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.9rem; background: radial-gradient(circle at 40% 35%, #3ddc84, #128a4b);
+      box-shadow: 0 0 0 7px rgba(40,200,110,.35), 0 4px 10px rgba(0,0,0,.4); }
+    .win { position: relative; z-index: 3; margin-top: 8px; min-height: 28px;
+      font-family: 'Anton', sans-serif; color: #ffd400; font-size: 1.4rem; opacity: 0; }
+    .win.show { opacity: 1; animation: pop2 .5s cubic-bezier(.2,1.4,.4,1); }
+    @keyframes pop2 { from { transform: scale(.4); } to { transform: scale(1); } }
+
+    /* ── PANEL 3 · LIMITED / MEGAPHONE ── */
+    .p3 { background: radial-gradient(120% 95% at 50% 18%, #0c5a2a, #073d1c 55%, #021f0e); }
+    .cashcard { position: relative; z-index: 3; width: 78%; max-width: 300px; aspect-ratio: 1.55 / 1;
+      background: linear-gradient(160deg, #2e5bff, #1532b0); border-radius: 18px; margin: 16px 0;
+      display: flex; align-items: center; justify-content: center; box-shadow: 0 16px 36px rgba(0,0,0,.5); }
+    .cashcard .big { font-family: 'Anton', sans-serif; color: #fff; font-size: 2.8rem; }
+    .cashcard .date { position: absolute; top: -14px; right: 14px; background: #fff; color: #1b47c4;
+      font-family: 'Anton', sans-serif; font-size: 1.05rem; padding: 4px 14px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,.3); }
+    .mega { position: relative; z-index: 3; width: 110%; margin: 6px 0 16px; transform: rotate(-1.5deg);
+      background: linear-gradient(90deg, #ffe000, #ffc400); padding: 13px 14px 13px 56px; box-shadow: 0 8px 18px rgba(0,0,0,.35); }
+    .mega .icon { position: absolute; left: 6px; top: 50%; transform: translateY(-50%); font-size: 2.2rem;
+      animation: shout .6s ease-in-out infinite; }
+    @keyframes shout { 0%,100% { transform: translateY(-50%) rotate(-8deg); } 50% { transform: translateY(-50%) rotate(3deg); } }
+    .mega .m1 { font-family: 'Anton', sans-serif; color: #5a3500; font-size: 1.15rem; }
+    .mega .m2 { font-family: 'Anton', sans-serif; color: #ff3b00; font-size: 1.3rem; }
+
+    /* ── PANEL 4 · RECEIVING / GIFT BOX ── */
+    .p4 { background: radial-gradient(120% 95% at 50% 30%, #1c2412, #0a0f0a); }
+    .recv { position: relative; z-index: 3; color: #cfe9ff; font-weight: 800; font-size: 1.15rem; margin-bottom: 8px; }
+    .sender-chip { position: relative; z-index: 3; display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); border-radius: 100px;
+      padding: 6px 14px 6px 7px; font-family: 'Space Mono', monospace; font-size: .8rem; }
+    .sender-chip .ava { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #ff8a3d, #ff5a00); }
+
+    /* gift box (reused on panel 4) */
+    .giftbox { width: 138px; height: 122px; position: relative; margin: 16px auto 18px;
+      animation: jiggle 1.1s ease-in-out infinite; transform-origin: bottom center; }
+    @keyframes jiggle { 0%,100% { transform: rotate(-4deg) translateY(0); } 25% { transform: rotate(4deg) translateY(-4px); }
+      50% { transform: rotate(-3deg) translateY(0); } 75% { transform: rotate(3deg) translateY(-3px); } }
+    .gb-base { position: absolute; bottom: 0; left: 7px; width: 124px; height: 78px;
+      background: linear-gradient(160deg, #ff8a5c, #ff4a14); border-radius: 9px; box-shadow: 0 14px 30px rgba(120,20,0,.45); }
+    .gb-base::after, .gb-lid::after { content: ''; position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+      width: 21px; height: 100%; background: rgba(255,255,255,.92); }
+    .gb-lid { position: absolute; top: 20px; left: 0; width: 138px; height: 31px;
+      background: linear-gradient(160deg, #ff9a6c, #ff5a24); border-radius: 9px; z-index: 2;
+      box-shadow: 0 6px 12px rgba(120,20,0,.35); transition: transform .6s cubic-bezier(.4,-0.5,.3,1.5), opacity .6s ease; }
+    .gb-bow { position: absolute; top: -24px; left: 50%; transform: translateX(-50%); font-size: 2.2rem; z-index: 3; line-height: 1;
+      transition: transform .6s ease, opacity .5s ease; }
+    .giftbox.opening { animation: none; }
+    .giftbox.opening .gb-lid { transform: translateY(-160px) rotate(24deg); opacity: 0; }
+    .giftbox.opening .gb-bow { transform: translate(-50%, -190px) rotate(40deg) scale(1.2); opacity: 0; }
+    .giftbox.opening .gb-base { animation: boxpop .5s ease; }
+    @keyframes boxpop { 40% { transform: scale(1.12, .9); } 100% { transform: scale(1); } }
+
+    /* ════════════════════ STAGE 2 · THE CARD ════════════════════ */
+    .card {
+      background: radial-gradient(125% 80% at 50% 46%, #1d2029 0%, #14161C 55%, #0d0e13 100%);
+      z-index: 10; opacity: 0; transform: scale(.92);
+      transition: opacity .6s ease .15s, transform .6s ease .15s;
+    }
+    .card.show { opacity: 1; transform: scale(1); }
+    /* greeting-card frame */
+    .card::after {
+      content: ''; position: absolute; inset: 16px;
+      border: 1.5px solid rgba(241,237,226,0.16); border-radius: 20px;
+      pointer-events: none; z-index: 5;
+    }
+
+    .stripe {
+      position: absolute; top: 0; left: 0; right: 0; height: 7px; z-index: 6;
       background-image:
-        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.2) 0%, transparent 100%),
-        radial-gradient(1px 1px at 75% 8%,  rgba(255,255,255,0.15) 0%, transparent 100%),
-        radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.12) 0%, transparent 100%),
-        radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.1) 0%, transparent 100%),
-        radial-gradient(1px 1px at 5%  90%, rgba(255,255,255,0.08) 0%, transparent 100%);
-      z-index: 0;
+        linear-gradient(45deg, var(--blaze) 25%, transparent 25%, transparent 75%, var(--blaze) 75%),
+        linear-gradient(45deg, var(--blaze) 25%, transparent 25%, transparent 75%, var(--blaze) 75%);
+      background-size: 7px 7px; background-position: 0 0, 3.5px 3.5px;
     }
 
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 64px 24px 32px;
+    .risers { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+
+    .riser {
+      position: absolute; left: var(--x, 50%); top: var(--y, 12%);
+      max-width: 44vw; pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
     }
-
-    .hero h1 {
-      font-size: clamp(2.8rem, 10vw, 5rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      background: linear-gradient(135deg, var(--green) 0%, var(--blue) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 14px;
+    .riser.slam { animation: slam .5s cubic-bezier(.2,.7,.3,1.25) forwards; }
+    @keyframes slam {
+      0%   { opacity: 0; transform: translate(-50%, -50%) translateY(-80px) scale(2.2) rotate(var(--rot, 0deg)); }
+      55%  { opacity: 1; }
+      72%  { transform: translate(-50%, -50%) translateY(0) scaleX(1.15) scaleY(.8) rotate(var(--rot, 0deg)); } /* squash on impact */
+      86%  { transform: translate(-50%, -50%) scale(1.04) rotate(var(--rot, 0deg)); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(var(--rot, 0deg)); }
     }
-
-    .hero .tagline {
-      font-size: clamp(1rem, 3vw, 1.25rem);
-      color: var(--muted);
-      max-width: 400px;
-      margin: 0 auto 40px;
-      line-height: 1.5;
-    }
-
-    /* ── GARMIN WATCH ── */
-    .watch-wrap {
-      display: flex;
-      justify-content: center;
-      margin: 0 0 48px;
-    }
-
-    .watch {
-      position: relative;
-      width: 160px;
-    }
-
-    .band {
-      width: 56px;
-      height: 28px;
-      background: #111827;
-      border: 2px solid #1f2d3d;
-      margin: 0 auto;
-    }
-
-    .band-top { border-radius: 6px 6px 0 0; border-bottom: none; }
-    .band-bot  { border-radius: 0 0 6px 6px; border-top: none;   }
-
-    .face {
-      width: 120px;
-      height: 130px;
-      background: #070e1a;
-      border: 3px solid var(--green);
-      border-radius: 32px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      box-shadow:
-        0 0 24px rgba(0,212,168,0.35),
-        0 0 80px rgba(0,212,168,0.12),
-        inset 0 0 40px rgba(0,0,0,0.6);
-      animation: glow 2.5s ease-in-out infinite;
-    }
-
-    @keyframes glow {
-      0%,100% { box-shadow: 0 0 24px rgba(0,212,168,0.35), 0 0 80px rgba(0,212,168,0.12); }
-      50%      { box-shadow: 0 0 36px rgba(0,212,168,0.55), 0 0 110px rgba(0,212,168,0.2); }
-    }
-
-    .face-brand  { font-size: 9px;  letter-spacing: 3px; color: var(--green); font-weight: 700; }
-    .face-steps  { font-size: 30px; font-weight: 900;  color: var(--green); line-height: 1; }
-    .face-unit   { font-size: 8px;  letter-spacing: 1px; color: #3a4a5a; text-transform: uppercase; }
-    .face-hr     { font-size: 12px; color: #ff6b6b; font-weight: 600; margin-top: 4px; }
-
-    .side-btn {
-      position: absolute;
-      right: -6px;
-      width: 5px;
-      height: 22px;
-      background: #1f2d3d;
-      border-radius: 3px;
-    }
-    .side-btn-top { top: 40px; }
-    .side-btn-bot { top: 68px; }
-
-    /* ── GIFT BANNER ── */
-    .gift {
-      position: relative;
-      z-index: 1;
-      background: linear-gradient(135deg, rgba(0,212,168,0.09), rgba(0,153,255,0.09));
-      border: 1px solid rgba(0,212,168,0.25);
-      border-radius: 20px;
-      padding: 28px 28px;
-      max-width: 620px;
-      margin: 0 auto 56px;
-      width: calc(100% - 40px);
+    /* no box — just ink written on the card. font/colour/size set per message in JS */
+    .riser-in {
+      line-height: 1.12;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.55);
       text-align: center;
     }
-
-    .gift h2 { font-size: 1.4rem; color: var(--green); margin-bottom: 10px; }
-    .gift p  { color: #8888bb; font-size: 0.95rem; line-height: 1.65; }
-
-    /* ── SECTIONS ── */
-    .section {
-      position: relative;
-      z-index: 1;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 20px 60px;
+    .riser-name {
+      display: block; font-family: inherit;
+      font-size: 0.5em; opacity: 0.62; margin-top: 4px;
     }
 
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--green);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 24px;
+    .card-core {
+      position: relative; z-index: 4; text-align: center; padding: 0 26px;
+      pointer-events: none;
     }
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(0,212,168,0.25);
+    .hbd {
+      font-family: 'Caveat', cursive; font-weight: 700;
+      font-size: clamp(2.2rem, 11vw, 3.2rem); color: var(--blaze);
+      line-height: 0.9; transform: rotate(-4deg);
+      animation: hbdpop .7s cubic-bezier(.2,1.3,.4,1) both .5s;
     }
-
-    /* ── FUNNY MESSAGES ── */
-    .msgs {
-      display: grid;
-      gap: 14px;
-      grid-template-columns: 1fr;
+    @keyframes hbdpop { from { transform: rotate(-4deg) scale(.3); opacity: 0; } to { transform: rotate(-4deg) scale(1); opacity: 1; } }
+    .name {
+      font-family: 'Anton', sans-serif; text-transform: uppercase;
+      font-size: clamp(3.4rem, 20vw, 5.8rem); line-height: 0.82; letter-spacing: 0.01em;
+      margin-top: 2px;
+      animation: namepop .7s cubic-bezier(.2,1.2,.4,1) both .62s;
     }
-
-    @media (min-width: 520px) { .msgs { grid-template-columns: 1fr 1fr; } }
-
-    .msg-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
-      transition: transform 0.2s ease, border-color 0.2s ease;
+    @keyframes namepop { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .note {
+      font-family: 'Caveat', cursive; font-weight: 600;
+      font-size: clamp(1.4rem, 6vw, 1.85rem); color: var(--paper);
+      margin: 6px 0 14px; transform: rotate(-1.5deg);
+      animation: fadeup .6s ease both .9s;
     }
-    .msg-card:hover { transform: translateY(-3px); border-color: rgba(0,212,168,0.3); }
-
-    .msg-text   { font-size: 0.95rem; line-height: 1.6; color: #ccccdd; margin-bottom: 14px; }
-    .msg-author { font-size: 0.8rem; color: var(--green); font-weight: 600; }
-
-    /* ── SIGNATURES WALL ── */
-    .sigs-wall {
-      position: relative;
-      min-height: 200px;
+    .subline {
+      font-family: 'Caveat', cursive; font-weight: 500;
+      font-size: clamp(1.15rem, 5vw, 1.5rem); color: #CFCBBF;
+      max-width: 330px; margin: 0 auto; line-height: 1.35;
+      animation: fadeup .6s ease both 1.05s;
     }
+    .subline b { color: var(--blaze); font-weight: 700; }
+    @keyframes fadeup { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    .sigs-grid {
-      display: grid;
-      gap: 12px;
+    .hint {
+      position: absolute; bottom: 22px; left: 0; right: 0; z-index: 4; text-align: center;
+      font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      animation: fadeup .6s ease both 1.4s, floaty 3s ease-in-out infinite 2s;
     }
+    @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-    .sig-card {
-      background: rgba(0,212,168,0.04);
-      border: 1px solid rgba(0,212,168,0.18);
-      border-radius: 14px;
-      padding: 18px 20px;
+    #fx { position: fixed; inset: 0; z-index: 30; pointer-events: none; }
+
+    /* impact shake when a message slaps down */
+    body.shake { animation: shake .26s ease; }
+    @keyframes shake {
+      0%,100% { transform: translate(0,0) rotate(0); }
+      25% { transform: translate(-5px, 3px) rotate(-.4deg); }
+      50% { transform: translate(4px, -2px) rotate(.3deg); }
+      75% { transform: translate(-3px, 2px) rotate(-.2deg); }
     }
 
-    .sig-name    { font-weight: 700; color: #fff; font-size: 0.95rem; margin-bottom: 6px; }
-    .sig-message { color: #7777aa; font-size: 0.88rem; line-height: 1.55; }
-
-    .sig-placeholder {
-      text-align: center;
-      color: var(--muted);
-      padding: 40px 20px;
-      font-size: 0.9rem;
-    }
-
-    /* ── SIGN CTA ── */
-    .sign-cta {
-      text-align: center;
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 16px 36px;
-      background: linear-gradient(135deg, var(--green), var(--blue));
-      color: #000;
-      font-weight: 800;
-      font-size: 1rem;
-      border-radius: 100px;
-      text-decoration: none;
-      box-shadow: 0 4px 24px rgba(0,212,168,0.35);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      letter-spacing: -0.01em;
-    }
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 36px rgba(0,212,168,0.45);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 32px 20px 48px;
-      color: #222244;
-      font-size: 0.8rem;
+    @media (prefers-reduced-motion: reduce) {
+      .giftbox, .cta, .cta .finger, .spark, .mega .icon, .wheel.spin, .progress .fill, .progress .ball { animation: none !important; transition: none !important; }
+      .riser.slam { animation: none; opacity: 1; }
+      body.shake { animation: none; }
     }
   </style>
 </head>
 <body>
 
-<div class="stars"></div>
+<!-- ════════ STAGE 1 · FAKE TEMU FUNNEL ════════ -->
+<div class="screen gate" id="gate">
 
-<!-- HERO -->
-<div class="hero">
-  <h1>Happy Birthday,<br>Austin!</h1>
-  <p class="tagline">We all pitched in — and we have opinions about your fitness 😄</p>
-
-  <div class="watch-wrap">
-    <div class="watch">
-      <div class="band band-top"></div>
-      <div class="face">
-        <span class="face-brand">GARMIN</span>
-        <span class="face-steps">10,247</span>
-        <span class="face-unit">steps today</span>
-        <span class="face-hr">♥ 68 bpm</span>
-      </div>
-      <div class="band band-bot"></div>
-      <div class="side-btn side-btn-top"></div>
-      <div class="side-btn side-btn-bot"></div>
-    </div>
+  <!-- fake iOS status bar -->
+  <div class="statusbar">
+    <span>26:00</span>
+    <span class="right">●●●ıl <span>📶</span> <span class="batt">99</span></span>
   </div>
+
+  <!-- PANEL 1 · PAYDAY -->
+  <div class="panel p1 active" data-step="0">
+    <div class="cal-ghost">
+      <b style="top:6%;left:42%;font-size:5.5rem">18</b>
+      <b style="top:7%;right:-4%;font-size:5.5rem">19</b>
+      <b style="bottom:22%;left:8%;font-size:6rem">25</b>
+      <b style="bottom:22%;right:-6%;font-size:6rem">26</b>
+    </div>
+    <div class="paynote">
+      <span class="pin"></span>
+      <div class="l1">Today is<br>AUSTIN'S</div>
+      <div class="l2">BIRTHDAY!</div>
+    </div>
+    <div class="progress"><div class="fill" id="pfill"></div><div class="ball" id="pball">⚽</div></div>
+    <div class="progress-label">Your gift is coming…</div>
+    <button class="cta" data-next>Claim Now</button>
+  </div>
+
+  <!-- PANEL 2 · RECEIVING / GIFT -->
+  <div class="panel p4" data-step="1">
+    <div class="recv">Receiving your gift from YOUR FRIENDS</div>
+    <div class="sender-chip"><span class="ava"></span><span id="sender">H****W</span> · Event balance</div>
+    <div class="giftbox" id="giftbox">
+      <div class="gb-bow">🎀</div>
+      <div class="gb-lid"></div>
+      <div class="gb-base"></div>
+    </div>
+    <button class="cta" id="openBtn"><span class="finger">👆</span> Tap to Open</button>
+  </div>
+
+  <div class="disclaimer">*For illustrative purposes only. Everyone gets the best result. Gift not guaranteed unless you are Austin. Minimum birthday required. After receiving, you may be eligible for emotional damage during a designated cooling period. <u>See nonexistent rules (!)</u></div>
 </div>
 
-<!-- GIFT BANNER -->
-<div class="gift">
-  <h2>🎁 We Got You Something</h2>
-  <p>
-    We all chipped in to get you a <strong style="color:var(--green)">Garmin Watch</strong> — because
-    nothing says "we care about you" like a device that will monitor your heart rate, judge your sleep,
-    track your stress, and remind you to move every hour. Happy birthday. You're welcome.
-  </p>
+<!-- ════════ STAGE 2 · CARD ════════ -->
+<div class="screen card" id="card">
+  <div class="stripe"></div>
+  <div class="risers" id="risers"></div>
+
+  <div class="card-core">
+    <div class="hbd">Happy Birthday</div>
+    <h1 class="name">Austin</h1>
+    <div class="note">you're 26 today 🎂</div>
+    <p class="subline">the whole crew chipped in to get you <b>something good</b> 🎁 now stop reading and go open the box you're actually holding</p>
+  </div>
+
 </div>
 
-<!-- MESSAGES FROM THE CREW -->
-<div class="section">
-  <div class="section-title">Messages from the Crew</div>
-  <div class="msgs">
-    <div class="msg-card">
-      <p class="msg-text">"Congrats! You now own a device that costs more than your gym membership
-        and will be more consistent at tracking your progress than you will be."</p>
-      <div class="msg-author">— From the whole squad 😂</div>
-    </div>
-    <div class="msg-card">
-      <p class="msg-text">"May your heart rate always be in Zone 2 and your recovery score
-        never drop below 70. Happy birthday, king."</p>
-      <div class="msg-author">— People who also skip leg day</div>
-    </div>
-    <div class="msg-card">
-      <p class="msg-text">"You're officially the most-tracked person we know. There's
-        nowhere to hide now. Big Brother is on your wrist."</p>
-      <div class="msg-author">— Your biggest fans (and snitches)</div>
-    </div>
-    <div class="msg-card">
-      <p class="msg-text">"We hope the Garmin battery lasts longer than your motivation on
-        day 3 of a new training plan. (Spoiler: it will.)"</p>
-      <div class="msg-author">— Spoken from experience</div>
-    </div>
-  </div>
-</div>
+<canvas id="fx"></canvas>
 
-<!-- SIGNATURES WALL -->
-<div class="section">
-  <div class="section-title">Signed With Love</div>
-  <div class="sigs-wall">
-    <div id="sigs-container">
-      <div class="sig-placeholder">Loading signatures... 💌</div>
-    </div>
-  </div>
-  <div class="sign-cta">
-    <a href="sign.html" class="btn">✍️ Add Your Signature</a>
-  </div>
-</div>
-
-<footer>Made with ❤️ by your friends &nbsp;·&nbsp; Happy Birthday Austin 🎂</footer>
-
-<!-- Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-
 <script>
   // ── CONFIG: replace with your real Supabase values ──
   const SUPABASE_URL      = 'YOUR_SUPABASE_URL';
   const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 
-  // Launch confetti on load
-  window.addEventListener('load', () => {
-    const burst = (x, y, count) => confetti({
-      particleCount: count,
-      spread: 90,
-      origin: { x, y },
-      colors: ['#00d4a8', '#0099ff', '#ff6b6b', '#ffd700', '#ff69b4', '#fff']
-    });
-    burst(0.5, 0.25, 140);
-    setTimeout(() => burst(0.15, 0.45, 60), 500);
-    setTimeout(() => burst(0.85, 0.45, 60), 700);
-  });
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch(e){} };
 
-  // Load signatures from Supabase
-  async function loadSignatures() {
-    const container = document.getElementById('sigs-container');
+  const fire = (o) => window.confetti && confetti(Object.assign({ disableForReducedMotion: true }, o));
 
-    if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
-      container.innerHTML = '<div class="sig-placeholder">Signatures coming soon — be the first to sign! 👇</div>';
-      return;
+  /* ---------- sprinkle sparkles on each panel ---------- */
+  function sparkle(panel, emo) {
+    if (reduce) return;
+    for (let i = 0; i < 10; i++) {
+      const s = document.createElement('div');
+      s.className = 'spark';
+      s.textContent = emo[i % emo.length];
+      s.style.left = (6 + (i * 41) % 88) + '%';
+      s.style.top  = (8 + (i * 57) % 84) + '%';
+      s.style.fontSize = (0.7 + (i % 3) * 0.35) + 'rem';
+      s.style.setProperty('--t', (1.6 + (i % 5) * 0.4) + 's');
+      s.style.setProperty('--d', (-(i % 7) * 0.3) + 's');
+      panel.appendChild(s);
     }
+  }
+  document.querySelectorAll('.p1').forEach(p => sparkle(p, ['✨','💰','⭐']));
+  document.querySelectorAll('.p4').forEach(p => sparkle(p, ['✨','🎁','💸']));
 
+  /* ---------- funnel step machine ---------- */
+  const panels = [...document.querySelectorAll('.panel')];
+  let step = -1;
+  function goTo(n) {
+    if (n === step) return;
+    panels.forEach(p => p.classList.toggle('active', +p.dataset.step === n));
+    step = n;
+    buzz(12);
+    if (n === 0) runProgress();
+  }
+  document.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => goTo(step + 1)));
+
+  // P1 — progress bar fills, then ball rolls to the end
+  function runProgress() {
+    const fill = document.getElementById('pfill'), ball = document.getElementById('pball');
+    requestAnimationFrame(() => { fill.style.width = '100%'; ball.style.left = '100%'; });
+  }
+
+  /* ---------- THE OPEN (final tap on the gift screen) ---------- */
+  let opened = false;
+  function openGift() {
+    if (opened) return; opened = true;
+    buzz([30, 40, 60]);
+    document.getElementById('giftbox').classList.add('opening');
+    fire({ particleCount: 160, spread: 100, origin: { y: 0.55 }, scalar: 1.1 });
+    setTimeout(() => fire({ particleCount: 80, angle: 60,  spread: 70, origin: { x: 0, y: 0.6 } }), 180);
+    setTimeout(() => fire({ particleCount: 80, angle: 120, spread: 70, origin: { x: 1, y: 0.6 } }), 180);
+    setTimeout(() => {
+      document.getElementById('gate').classList.add('gone');
+      document.getElementById('card').classList.add('show');
+      startRisers();
+    }, 650);
+  }
+  document.getElementById('openBtn').addEventListener('click', openGift);
+
+  const ph = location.hash.match(/^#p([0-3])$/);   // #p0..#p3 deep-link a panel for previews
+  goTo(ph ? +ph[1] : 0);
+
+  /* ---------- card messages ---------- */
+  const DEMO = [
+    { name: 'the crew',      message: 'your rest days are over 💀' },
+    { name: 'leg day club',  message: 'Zone 2 forever ❤️‍🔥' },
+    { name: 'ur fans',       message: 'now we can see EVERYTHING' },
+    { name: 'marathon squad',message: '26.2 miles. basically.' },
+    { name: 'everyone',      message: 'happy bday legend 🏃' },
+    { name: 'sarah',         message: 'track the recovery, king 👑' },
+    { name: 'jake',          message: 'stop flexing your VO2 max' },
+    { name: 'mom',           message: 'go touch grass (with GPS) 🌱' },
+  ];
+  let MSGS = DEMO;
+  // two 2x2 grids — top band and bottom band — well clear of the centered title.
+  // interleaved top/bottom so partial fills stay balanced. extras (9–10) only used if needed.
+  const SLOTS = [
+    { x: 27, y: 11 }, { x: 73, y: 74 },   // top-L,  bottom-R
+    { x: 73, y: 11 }, { x: 27, y: 74 },   // top-R,  bottom-L
+    { x: 27, y: 27 }, { x: 73, y: 90 },   // top-L2, bottom-R2
+    { x: 73, y: 27 }, { x: 27, y: 90 },   // top-R2, bottom-L2
+    { x: 50, y: 19 }, { x: 50, y: 82 },   // center top/bottom (overflow only)
+  ];
+  const MAX_SLAM = SLOTS.length;
+
+  // everyone "writes" in their own pen — font + colour + size vary per message.
+  // real submissions can carry their own it.font / it.color / it.size; otherwise we pick one.
+  const PENS = [
+    "'Caveat', cursive", "'Permanent Marker', cursive", "'Shadows Into Light', cursive",
+    "'Gloria Hallelujah', cursive", "'Patrick Hand', cursive", "'Satisfy', cursive", "'Kalam', cursive",
+  ];
+  const INKS = ['#F4F0E6', '#FF6A3D', '#7CD4FF', '#FFD23F', '#8DFF7A', '#FF93D6', '#C7A6FF'];
+
+  function makeRiser(it, i) {
+    const slot = SLOTS[i % SLOTS.length];
+    const rot  = (i % 2 ? 1 : -1) * (3 + i % 4);
+    const font = it.font  || PENS[i % PENS.length];
+    const ink  = it.color || INKS[(i * 3) % INKS.length];
+    const size = it.size  || (1.55 + (i % 4) * 0.22);   // rem — natural size variation
+    const r = document.createElement('div');
+    r.className = 'riser';
+    r.dataset.rot = rot;
+    r.style.setProperty('--x', slot.x + '%');
+    r.style.setProperty('--y', slot.y + '%');
+    r.style.setProperty('--rot', rot + 'deg');
+    r.style.zIndex = 10 + i;
+    r.innerHTML =
+      `<div class="riser-in" style="font-family:${font};color:${ink};font-size:${size}rem">${esc(it.message)}<span class="riser-name">— ${esc(it.name)}</span></div>`;
+    return r;
+  }
+
+  function applyXf(r) {   // resting transform after the slam lands
+    r.style.transform = `translate(-50%, -50%) rotate(${r.dataset.rot}deg)`;
+  }
+
+  // a message slams down: drops in, squashes on impact, shakes the screen
+  function impact(r) {
+    buzz([0, 28]);
+    document.body.classList.remove('shake'); void document.body.offsetWidth; document.body.classList.add('shake');
+    if (window.confetti) {
+      const b = r.getBoundingClientRect();
+      confetti({ particleCount: 14, spread: 360, startVelocity: 16, scalar: .7, ticks: 50, gravity: 1.4,
+        disableForReducedMotion: true,
+        origin: { x: (b.left + b.width/2) / innerWidth, y: (b.top + b.height/2) / innerHeight } });
+    }
+  }
+  function slamIn(it, i) {
+    const r = makeRiser(it, i);
+    document.getElementById('risers').appendChild(r);
+    if (reduce) { r.style.opacity = 1; applyXf(r); return; }
+    r.classList.add('slam');
+    setTimeout(() => impact(r), 360);    // fire at the squash frame
+    r.addEventListener('animationend', () => { r.classList.remove('slam'); r.style.opacity = 1; applyXf(r); }, { once: true });
+  }
+  function startRisers() {
+    const n = Math.min(MSGS.length, MAX_SLAM);
+    if (reduce) { for (let i = 0; i < n; i++) slamIn(MSGS[i], i); return; }
+    for (let i = 0; i < n; i++) setTimeout(() => slamIn(MSGS[i], i), 250 + i * 480);  // slap down one at a time
+  }
+
+  /* ---------- load real signatures if configured ---------- */
+  (async function load() {
+    if (SUPABASE_URL === 'YOUR_SUPABASE_URL') return;
     try {
       const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/signatures?order=created_at.desc&select=name,message`,
+        `${SUPABASE_URL}/rest/v1/signatures?order=created_at.desc&select=name,message&limit=20`,
         { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
       );
       const rows = await res.json();
+      if (Array.isArray(rows) && rows.length) MSGS = rows;
+    } catch (e) {}
+  })();
 
-      if (!Array.isArray(rows) || rows.length === 0) {
-        container.innerHTML = '<div class="sig-placeholder">No signatures yet — be the first! 👇</div>';
-        return;
-      }
-
-      const grid = document.createElement('div');
-      grid.className = 'sigs-grid';
-      rows.forEach(({ name, message }) => {
-        const card = document.createElement('div');
-        card.className = 'sig-card';
-        card.innerHTML = `
-          <div class="sig-name">${esc(name)}</div>
-          <div class="sig-message">${esc(message)}</div>
-        `;
-        grid.appendChild(card);
-      });
-      container.replaceWith(grid);
-    } catch {
-      container.innerHTML = '<div class="sig-placeholder">Signatures coming soon! 💌</div>';
-    }
-  }
-
-  const esc = s => String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-
-  loadSignatures();
+  /* skip the gate when deep-linked with #card (handy for previews) */
+  if (location.hash === '#card') { opened = true; document.getElementById('gate').classList.add('gone'); document.getElementById('card').classList.add('show'); startRisers(); }
 </script>
 </body>
 </html>
